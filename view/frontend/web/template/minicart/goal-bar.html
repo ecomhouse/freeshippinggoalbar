@@ -1,0 +1,17 @@
+<!-- ko if: isVisible() -->
+<div class="freeshipping-goal-bar" data-bind="css: { 'freeshipping-goal-bar-reached': isReached() }">
+    <!-- ko if: isReached() -->
+    <p class="freeshipping-goal-bar-message" data-bind="text: state().successMessage"></p>
+    <!-- /ko -->
+    <!-- ko ifnot: isReached() -->
+    <p class="freeshipping-goal-bar-message" data-bind="html: state().message"></p>
+    <div class="freeshipping-goal-bar-track">
+        <div class="freeshipping-goal-bar-fill" data-bind="style: { width: getFillWidth() }"></div>
+    </div>
+    <div class="freeshipping-goal-bar-scale">
+        <span class="freeshipping-goal-bar-limit" data-bind="text: state().min"></span>
+        <span class="freeshipping-goal-bar-limit" data-bind="text: state().max"></span>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->

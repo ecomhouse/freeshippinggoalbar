@@ -1,0 +1,146 @@
+//
+//  Free Shipping Goal Bar
+//  ______________________________________________
+//
+//  Starting styles, deliberately self-contained. The module styles its own block only and never
+//  touches the cart page layout. Every colour is a variable, so a theme overrides them in its own
+//  `_extend.less` instead of copying this file. No `!important` anywhere.
+//
+//  Layout is a single column - message, full-width track, scale underneath - so the block reads
+//  as one card at any width instead of spreading its parts across a row.
+
+//
+//  Variables
+//  ----------------------------------------------
+
+@freeshipping-goal-bar-background: #f7fafc;
+@freeshipping-goal-bar-border: #dfe8f0;
+@freeshipping-goal-bar-border-radius: 6px;
+@freeshipping-goal-bar-shadow: rgba(22, 45, 61, .06);
+@freeshipping-goal-bar-text-color: #2b3a45;
+@freeshipping-goal-bar-muted-color: #75858f;
+
+@freeshipping-goal-bar-accent-color: #1979c3;
+@freeshipping-goal-bar-accent-color-light: #35b5c4;
+
+@freeshipping-goal-bar-track-background: #e6edf3;
+@freeshipping-goal-bar-track-height: 10px;
+
+@freeshipping-goal-bar-reached-background: #eef8ef;
+@freeshipping-goal-bar-reached-border: #cbe6cd;
+@freeshipping-goal-bar-reached-color: #2f7d32;
+@freeshipping-goal-bar-reached-color-light: #61b365;
+
+//
+//  Card
+//  ----------------------------------------------
+
+.freeshipping-goal-bar {
+    background-color: @freeshipping-goal-bar-background;
+    border: 1px solid @freeshipping-goal-bar-border;
+    border-radius: @freeshipping-goal-bar-border-radius;
+    box-shadow: 0 1px 2px @freeshipping-goal-bar-shadow;
+    box-sizing: border-box;
+    color: @freeshipping-goal-bar-text-color;
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    width: 100%;
+}
+
+.freeshipping-goal-bar-reached {
+    background-color: @freeshipping-goal-bar-reached-background;
+    border-color: @freeshipping-goal-bar-reached-border;
+    color: @freeshipping-goal-bar-reached-color;
+}
+
+//
+//  Message
+//  ----------------------------------------------
+
+.freeshipping-goal-bar-message {
+    font-size: 1.4rem;
+    line-height: 1.4;
+    margin: 0;
+    text-align: center;
+}
+
+.freeshipping-goal-bar-amount {
+    color: @freeshipping-goal-bar-accent-color;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.freeshipping-goal-bar-reached .freeshipping-goal-bar-message {
+    font-weight: 600;
+}
+
+.freeshipping-goal-bar-reached .freeshipping-goal-bar-message:before {
+    content: '\2713';
+    margin-right: 6px;
+}
+
+//
+//  Track
+//  ----------------------------------------------
+
+.freeshipping-goal-bar-track {
+    background-color: @freeshipping-goal-bar-track-background;
+    border-radius: @freeshipping-goal-bar-track-height;
+    height: @freeshipping-goal-bar-track-height;
+    margin-top: 12px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.freeshipping-goal-bar-fill {
+    background-color: @freeshipping-goal-bar-accent-color;
+    background-image: linear-gradient(90deg, @freeshipping-goal-bar-accent-color 0%, @freeshipping-goal-bar-accent-color-light 100%);
+    border-radius: @freeshipping-goal-bar-track-height;
+    height: 100%;
+    min-width: 4px;
+    transition: width .5s ease;
+}
+
+.freeshipping-goal-bar-reached .freeshipping-goal-bar-fill {
+    background-color: @freeshipping-goal-bar-reached-color;
+    background-image: linear-gradient(90deg, @freeshipping-goal-bar-reached-color 0%, @freeshipping-goal-bar-reached-color-light 100%);
+}
+
+//
+//  Scale
+//  ----------------------------------------------
+
+.freeshipping-goal-bar-scale {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+}
+
+.freeshipping-goal-bar-limit {
+    color: @freeshipping-goal-bar-muted-color;
+    font-size: 1.1rem;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+//
+//  Minicart
+//  ----------------------------------------------
+//
+//  The bar renders inside Magento's own `extra_info` region of the minicart Knockout app,
+//  directly under the subtotal - no core template override, no positioning hacks.
+
+.minicart-wrapper {
+    .freeshipping-goal-bar {
+        margin-bottom: 15px;
+        padding: 12px 15px;
+    }
+
+    .freeshipping-goal-bar-message {
+        font-size: 1.3rem;
+    }
+
+    .freeshipping-goal-bar-track {
+        margin-top: 10px;
+    }
+}

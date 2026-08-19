@@ -1,0 +1,32 @@
+{
+    "name": "ecomhouse/freeshippinggoalbar",
+    "description": "Magento 2 Free Shipping Goal Bar by ecomhouse",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "ecomhouse",
+            "email": "opensource@ecom.house",
+            "homepage": "https://ecom.house/"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=8.2",
+        "ecomhouse/base": "^1.0"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "EcomHouse\\FreeShippingGoalBar\\": ""
+        }
+    },
+    "extra": {
+        "magento": {
+            "module": "EcomHouse_FreeShippingGoalBar"
+        }
+    }
+}

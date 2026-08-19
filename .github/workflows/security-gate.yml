@@ -1,0 +1,19 @@
+# Copy this file, unchanged, into each OSS module repo at
+# .github/workflows/security-gate.yml
+#
+# All the actual logic lives in ecomhouse/.github's reusable workflow — this
+# file is deliberately tiny so 50+ module repos don't each carry a copy of the
+# real scanning logic. See templates/security-gate/README.md.
+
+name: security-gate
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  security-gate:
+    uses: ecomhouse/.github/.github/workflows/security-gate.yml@master
+    secrets:
+      client-terms-list: ${{ secrets.CLIENT_TERMS_LIST }}

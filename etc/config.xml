@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ecomhouse_freeshipping_goal_bar>
+            <general>
+                <enabled>0</enabled>
+                <threshold_source>carrier</threshold_source>
+                <manual_threshold>0</manual_threshold>
+            </general>
+        </ecomhouse_freeshipping_goal_bar>
+    </default>
+</config>

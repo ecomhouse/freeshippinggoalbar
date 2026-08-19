@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+
+/**
+ * The cart page renders the same component as the minicart, reading the same customer-data
+ * section. Server-side rendering was deliberately dropped: Breeze updates the cart over AJAX
+ * without reloading the page, which left a server-rendered bar frozen at its previous value.
+ */
+?>
+<div class="freeshipping-goal-bar-wrapper" data-bind="scope: 'ecomhouse-freeshipping-goal-bar'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "ecomhouse-freeshipping-goal-bar": {
+                        "component": "EcomHouse_FreeShippingGoalBar/js/view/goal-bar"
+                    }
+                }
+            }
+        }
+    }
+</script>

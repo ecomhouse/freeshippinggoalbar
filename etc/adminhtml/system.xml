@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="ecomhouse_freeshipping_goal_bar" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Free Shipping Goal Bar</label>
+            <tab>ecomhouse</tab>
+            <resource>EcomHouse_FreeShippingGoalBar::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Goal Bar</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Shows customers how far their cart is from free shipping, on the cart page and in the minicart.</comment>
+                </field>
+                <field id="threshold_source" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Goal Amount Taken From</label>
+                    <source_model>EcomHouse\FreeShippingGoalBar\Model\Config\Source\ThresholdSource</source_model>
+                    <comment>The Free Shipping method option keeps the bar in sync with Delivery Methods &gt; Free Shipping, so the bar promises exactly what checkout grants. The bar is hidden while that method is disabled.</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="manual_threshold" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Goal Amount</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <comment>Order value, in base currency, that earns free shipping. The bar is hidden while this is 0. This module only advertises the goal - granting free shipping stays a cart price rule.</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                        <field id="threshold_source">manual</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
