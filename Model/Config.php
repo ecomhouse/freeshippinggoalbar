@@ -40,20 +40,21 @@ class Config
     }
 
     /**
-     * Which goal provider supplies the threshold: SOURCE_CARRIER or SOURCE_MANUAL.
+     * Key of the goal provider that supplies the threshold: SOURCE_CARRIER, SOURCE_MANUAL or a key a
+     * project registered on GoalResolver's `providers` argument. An unset value is SOURCE_CARRIER.
      *
      * @param int|null $storeId
      * @return string
      */
     public function getThresholdSource(?int $storeId = null): string
     {
-        $source = (string) $this->scopeConfig->getValue(
+        $source = trim((string) $this->scopeConfig->getValue(
             self::XML_PATH_THRESHOLD_SOURCE,
             ScopeInterface::SCOPE_STORE,
             $storeId,
-        );
+        ));
 
-        return $source === self::SOURCE_MANUAL ? self::SOURCE_MANUAL : self::SOURCE_CARRIER;
+        return $source === '' ? self::SOURCE_CARRIER : $source;
     }
 
     /**

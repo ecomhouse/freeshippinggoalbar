@@ -128,6 +128,30 @@ wybieranej ustawieniem w adminie. Własną rejestrujesz w module projektowym:
 Gdy dla danego koszyka nie ma progu, zwróć `null` z `getThreshold()` — pasek się wtedy ukryje,
 zamiast pokazywać bezsensowne zero.
 
+Źródło dostaje opcję w polu **Threshold Source** oraz, gdy próg nie jest liczony od tej samej
+kwoty co metoda Free Shipping, własną wartość koszyka
+(`EcomHouse\FreeShippingGoalBar\Api\CartValueProviderInterface`), oba pod tym samym kluczem:
+
+```xml
+<type name="EcomHouse\FreeShippingGoalBar\Model\Config\Source\ThresholdSource">
+    <arguments>
+        <argument name="options" xsi:type="array">
+            <item name="customer_group" xsi:type="string">Customer group threshold</item>
+        </argument>
+    </arguments>
+</type>
+<type name="EcomHouse\FreeShippingGoalBar\Model\CartValueResolver">
+    <arguments>
+        <argument name="valueProviders" xsi:type="array">
+            <item name="customer_group" xsi:type="object">Vendor\Module\Model\GroupCartValue</item>
+        </argument>
+    </arguments>
+</type>
+```
+
+Zapisane źródło, którego dostawca zniknął (usunięty moduł projektu), wraca do progu metody Free
+Shipping.
+
 ## Rozwiązywanie problemów
 
 ### Pasek nie pojawia się nigdzie

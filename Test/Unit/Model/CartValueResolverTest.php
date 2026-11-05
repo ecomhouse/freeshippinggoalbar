@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace EcomHouse\FreeShippingGoalBar\Test\Unit\Model;
 
+use EcomHouse\FreeShippingGoalBar\Api\CartValueProviderInterface;
 use EcomHouse\FreeShippingGoalBar\Model\CartValueResolver;
+use EcomHouse\FreeShippingGoalBar\Model\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address;
@@ -94,6 +96,30 @@ class CartValueResolverTest extends TestCase
         ));
 
         $this->assertSame(180.0, $value);
+    }
+
+    public function testAsksTheValueProviderOfTheSelectedSource(): void
+    {
+        $config = $this->createMock(Config::class);
+        $config->method('getThresholdSource')->willReturn('project');
+        $provider = $this->createMock(CartValueProviderInterface::class);
+        $provider->method('getBaseValue')->willReturn(77.0);
+        $resolver = new CartValueResolver($this->createMock(ScopeConfigInterface::class), $config, ['project' => $provider]);
+
+        $this->assertSame(77.0, $resolver->getBaseValue($this->quote(200.0, 246.0, -20.0, 180.0, 41.4)));
+    }
+
+    public function testKeepsTheCarrierBasisForASourceWithoutValueProvider(): void
+    {
+        $config = $this->createMock(Config::class);
+        $config->method('getThresholdSource')->willReturn(Config::SOURCE_MANUAL);
+        $provider = $this->createMock(CartValueProviderInterface::class);
+        $provider->expects($this->never())->method('getBaseValue');
+        $scopeConfig = $this->createMock(ScopeConfigInterface::class);
+        $scopeConfig->method('isSetFlag')->willReturn(false);
+        $resolver = new CartValueResolver($scopeConfig, $config, ['project' => $provider]);
+
+        $this->assertSame(180.0, $resolver->getBaseValue($this->quote(200.0, 246.0, -20.0, 180.0, 41.4)));
     }
 
     private function resolver(bool $priceIncludesTax, bool $carrierTaxIncluding): CartValueResolver

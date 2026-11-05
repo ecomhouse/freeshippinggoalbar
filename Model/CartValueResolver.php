@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EcomHouse\FreeShippingGoalBar\Model;
 
+use EcomHouse\FreeShippingGoalBar\Api\CartValueProviderInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address;
@@ -24,14 +25,24 @@ use Magento\Store\Model\ScopeInterface;
  *
  * Reproducing this exactly is the whole point: any other basis (grand total, displayed subtotal)
  * makes the bar promise free shipping the carrier will not grant, or hide one it would.
+ *
+ * A project goal source with its own basis registers a CartValueProviderInterface under its key in
+ * `valueProviders`; that provider answers instead while the source is selected.
  */
 class CartValueResolver
 {
     private const XML_PATH_PRICE_INCLUDES_TAX = 'tax/calculation/price_includes_tax';
     private const XML_PATH_CARRIER_TAX_INCLUDING = 'carriers/freeshipping/tax_including';
 
+    /**
+     * @param ScopeConfigInterface $scopeConfig
+     * @param Config|null $config
+     * @param CartValueProviderInterface[] $valueProviders keyed by threshold source
+     */
     public function __construct(
         private readonly ScopeConfigInterface $scopeConfig,
+        private readonly ?Config $config = null,
+        private readonly array $valueProviders = [],
     ) {
     }
 
@@ -43,8 +54,14 @@ class CartValueResolver
      */
     public function getBaseValue(Quote $quote): float
     {
-        $address = $quote->getShippingAddress();
         $storeId = (int) $quote->getStoreId();
+        $source = $this->config?->getThresholdSource($storeId);
+        $provider = $source === null ? null : ($this->valueProviders[$source] ?? null);
+        if ($provider !== null) {
+            return $provider->getBaseValue($quote);
+        }
+
+        $address = $quote->getShippingAddress();
 
         $value = $this->getPackageValueWithDiscount($address, $storeId);
 

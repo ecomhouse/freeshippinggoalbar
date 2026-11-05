@@ -5,6 +5,23 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-11-05
+
+### Added
+
+- `options` argument on `Model\Config\Source\ThresholdSource`: a project goal source gets its
+  option in the **Threshold Source** select from `di.xml`.
+- `Api\CartValueProviderInterface` and the `valueProviders` argument on `CartValueResolver`: a
+  project source can compare its goal against its own cart value instead of the Free Shipping
+  carrier's basis.
+
+### Fixed
+
+- A project source registered on `GoalResolver` (the documented extension point) can now be
+  selected: `Config::getThresholdSource()` used to turn every value other than `manual` into
+  `carrier`. An unset value is still `carrier`, and a stored source with no registered provider
+  falls back to the carrier goal in `GoalResolver`.
+
 ## [1.0.0] - 2026-08-19
 
 First release. Successor to `ecomhouse/freeshippingprogressbar`, written from scratch rather than

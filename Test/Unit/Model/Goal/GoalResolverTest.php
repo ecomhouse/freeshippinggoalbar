@@ -25,6 +25,26 @@ class GoalResolverTest extends TestCase
         $this->assertSame(150.0, $resolver->getThreshold($this->quote()));
     }
 
+    public function testAsksAProjectProviderRegisteredUnderItsOwnKey(): void
+    {
+        $resolver = $this->resolver('project', [
+            Config::SOURCE_CARRIER => $this->provider(300.0),
+            'project' => $this->provider(42.0),
+        ]);
+
+        $this->assertSame(42.0, $resolver->getThreshold($this->quote()));
+    }
+
+    /**
+     * A source whose provider is gone (a removed project module) falls back to the carrier.
+     */
+    public function testFallsBackToTheCarrierForAnUnregisteredSource(): void
+    {
+        $resolver = $this->resolver('removed', [Config::SOURCE_CARRIER => $this->provider(300.0)]);
+
+        $this->assertSame(300.0, $resolver->getThreshold($this->quote()));
+    }
+
     public function testReturnsNullWhenNoProviderIsRegisteredForTheSource(): void
     {
         $resolver = $this->resolver(Config::SOURCE_MANUAL, []);

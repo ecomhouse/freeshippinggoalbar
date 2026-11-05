@@ -31,16 +31,21 @@ class ConfigTest extends TestCase
     }
 
     /**
-     * An unset or unknown value must not disable the bar - the carrier is the safe default,
-     * because it can only ever promise what checkout actually grants.
+     * An unset value must not disable the bar - the carrier is the safe default, because it can
+     * only ever promise what checkout actually grants.
      */
-    public function testFallsBackToTheCarrierSourceForUnknownValues(): void
+    public function testAnUnsetSourceIsTheCarrier(): void
     {
         $this->assertSame(Config::SOURCE_CARRIER, $this->config(values: [self::PATH_SOURCE => ''])->getThresholdSource());
-        $this->assertSame(
-            Config::SOURCE_CARRIER,
-            $this->config(values: [self::PATH_SOURCE => 'something-else'])->getThresholdSource(),
-        );
+    }
+
+    /**
+     * A project source registered on GoalResolver is passed through; an unknown one is resolved
+     * to the carrier by GoalResolver, not here.
+     */
+    public function testPassesAProjectSourceThrough(): void
+    {
+        $this->assertSame('project', $this->config(values: [self::PATH_SOURCE => 'project'])->getThresholdSource());
     }
 
     public function testReadsTheManualThresholdAsFloat(): void

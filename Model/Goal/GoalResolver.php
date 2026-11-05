@@ -13,6 +13,7 @@ use Magento\Quote\Model\Quote;
  *
  * Providers are injected from `di.xml` keyed by the value of the threshold-source setting, so a
  * project can add its own source (per customer group, per website) without touching this class.
+ * A value with no registered provider (a removed project source) falls back to the carrier one.
  */
 class GoalResolver
 {
@@ -35,7 +36,7 @@ class GoalResolver
     public function getThreshold(Quote $quote): ?float
     {
         $source = $this->config->getThresholdSource((int) $quote->getStoreId());
-        $provider = $this->providers[$source] ?? null;
+        $provider = $this->providers[$source] ?? $this->providers[Config::SOURCE_CARRIER] ?? null;
 
         return $provider?->getThreshold($quote);
     }

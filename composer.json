@@ -2,7 +2,7 @@
     "name": "ecomhouse/freeshippinggoalbar",
     "description": "Magento 2 Free Shipping Goal Bar by ecomhouse",
     "type": "magento2-module",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "license": "OSL-3.0",
     "authors": [
         {

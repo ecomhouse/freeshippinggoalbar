@@ -128,6 +128,30 @@ GoalProviderInterface`, chosen by the configured source. Register your own in a 
 Return `null` from `getThreshold()` when your source has no goal for that cart — the bar then
 hides itself instead of showing a meaningless zero.
 
+Give the source an option in the **Threshold Source** select, and, when your goal is not measured
+against the Free Shipping carrier's basis, a cart value of its own
+(`EcomHouse\FreeShippingGoalBar\Api\CartValueProviderInterface`), both under the same key:
+
+```xml
+<type name="EcomHouse\FreeShippingGoalBar\Model\Config\Source\ThresholdSource">
+    <arguments>
+        <argument name="options" xsi:type="array">
+            <item name="customer_group" xsi:type="string">Customer group threshold</item>
+        </argument>
+    </arguments>
+</type>
+<type name="EcomHouse\FreeShippingGoalBar\Model\CartValueResolver">
+    <arguments>
+        <argument name="valueProviders" xsi:type="array">
+            <item name="customer_group" xsi:type="object">Vendor\Module\Model\GroupCartValue</item>
+        </argument>
+    </arguments>
+</type>
+```
+
+A stored source whose provider is no longer registered (the project module was removed) falls
+back to the carrier goal.
+
 ## Troubleshooting
 
 ### The bar does not appear anywhere
